@@ -1,8 +1,30 @@
-# SPulse
+# Presago
 
-SPulse is a prediction-market project built with Soroban smart contracts on Stellar and a lightweight static HTML frontend.
+![CI](https://github.com/Presago-Labs/presago/actions/workflows/ci.yml/badge.svg)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![Stellar](https://img.shields.io/badge/Stellar-Soroban-7D00FF?logo=stellar&logoColor=white)
+
+Presago is a prediction-market project built with Soroban smart contracts on Stellar and a lightweight static HTML frontend.
 
 The frontend uses plain HTML, CSS, and JavaScript. It does not require Node.js, Next.js, React, npm, or a build step.
+
+## Table of Contents
+
+- [How it uses Stellar](#how-it-uses-stellar)
+- [Current status](#current-status)
+- [Repository layout](#repository-layout)
+- [Prerequisites](#prerequisites)
+- [Run the static frontend](#run-the-static-frontend)
+- [Frontend files](#frontend-files)
+- [Connect a wallet](#connect-a-wallet)
+- [Smart contracts](#smart-contracts)
+- [Testnet deployment](#testnet-deployment)
+- [Security](#security)
+- [Environment variables](#environment-variables)
+
+## How it uses Stellar
+
+Presago runs prediction markets on **Stellar** with **Soroban** smart contracts: pools, positions, referrals, and leaderboard rewards are contract state, and the static frontend connects to Freighter and submits `place_bet` invocations to Stellar Testnet. Live contract addresses are listed above.
 
 ## Current status
 
@@ -13,7 +35,7 @@ The Soroban contracts are deployed and initialized on Stellar Testnet. The stati
 | Contract | Testnet address |
 | --- | --- |
 | Prediction Market | `CAPCAPWPGPOCENAJFYYIE22WYNFEDVZ3CT73M5MAKILFMBQ5TN2MIS6T` |
-| PULSE Token | `CBYUQUXPGWUQRV7STCV3YPVLWNTFJHKLEAG7LVAOK7H4FIFJGZW5P476` |
+| PRESAGO Token | `CBYUQUXPGWUQRV7STCV3YPVLWNTFJHKLEAG7LVAOK7H4FIFJGZW5P476` |
 | Referral Registry | `CCKVUVYXR6FBB4VFYGDF3IDDUVBRJGKPDDRABTZYKI2LKAJNVLF3TTQ2` |
 | Leaderboard | `CCMNYMUI4XMDBTTMM7E6KNQFF3OVKS3Q2ERJ4EVQGCLW4VQCGUGG2AQM` |
 
@@ -27,6 +49,14 @@ The deployment output is stored locally in the ignored `deploy-output.json` file
 - `frontend/` — static HTML, CSS, and JavaScript website.
 - `scripts/` — testnet/mainnet deployment and smoke-test scripts.
 - `docs/` — contract invocation examples and technical documentation.
+
+## Prerequisites
+
+| Tool | Notes |
+| --- | --- |
+| **Python 3** | to serve the static frontend |
+| **Freighter** | browser wallet on Stellar Testnet |
+| **Rust + Stellar CLI** | only for the contracts workspace |
 
 ## Run the static frontend
 
@@ -46,6 +76,7 @@ http://localhost:8080
 ```
 
 You can also use the VS Code Live Server extension or deploy the contents of `frontend/` to any static host.
+
 ## Frontend files
 
 - `frontend/index.html` — page structure and inline SVG icon library.
@@ -91,7 +122,7 @@ If a public API is unavailable, the interface displays an unavailable state inst
 The Soroban workspace contains four contracts:
 
 - `prediction_market` — market creation, YES/NO bets, resolution, claims, cancellations, refunds, and fees.
-- `PULSE_token` — reward token and authorized minters.
+- `PRESAGO_token` — reward token and authorized minters.
 - `referral_registry` — user registration, referrals, and bonuses.
 - `leaderboard` — points, win/loss statistics, rankings, and token rewards.
 
@@ -131,12 +162,19 @@ bash scripts/smoke-test.sh
 
 The smoke test creates temporary Friendbot-funded users and checks registration, betting, cancellation, refunds, resolution, claims, token rewards, fees, and leaderboard data.
 
-
 ## Security
 
 - Never commit `.deploy.env`, secret keys, seed phrases, or wallet exports.
 - Contract IDs and public account addresses are safe to publish.
 - Wallet connection, balance lookup, and positions on market #3 are real Testnet operations. All other market cards remain simulations and are labeled accordingly.
+
+## Environment variables
+
+Copy `.env.example` to `.env` and fill in your values (see the file for inline docs). Key groups:
+
+| Variable group | Key variables |
+| --- | --- |
+| Deployment | `DEPLOYER_SECRET`, `SPONSOR_SECRET`, `RESOLVER_PUBLIC_KEY` (in `.deploy.env`, never committed) |
 
 ## License
 
