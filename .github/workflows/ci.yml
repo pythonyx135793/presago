@@ -48,7 +48,6 @@ jobs:
 
   contracts:
     name: Soroban contracts
-    if: hashFiles('contracts/**') != ''
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
